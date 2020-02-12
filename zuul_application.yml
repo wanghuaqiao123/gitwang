@@ -1,0 +1,44 @@
+spring:
+  profiles:
+    active:
+    - dev
+---
+server:
+  port: 9527
+spring:
+  profiles: dev #开发环境
+  application:
+    name: AIGOU-ZUUL-GATEWAY
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7001/eureka
+  instance:
+    instance-id: gateway-9527.com
+    prefer-ip-address: true
+zuul:
+  routes:
+    aigou.serviceId: EMPLOYEE-PROVIDER
+    aigou.path: /employee/**
+  ignored-services: "*"
+  prefix: /aigou
+---
+server:
+  port: 9526
+spring:
+  profiles: test #测试环境
+  application:
+    name: AIGOU-ZUUL-GATEWAY-TEST
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7001/eureka
+  instance:
+    instance-id: gateway-9527.com
+    prefer-ip-address: true
+zuul:
+  routes:
+    aigou.serviceId: EMPLOYEE-PROVIDER
+    aigou.path: /employee/**
+  ignored-services: "*"
+  prefix: /aigou
